@@ -151,13 +151,13 @@
   "faq": [
     {
       "id": "faq-1",
-      "question": "How do sessions work?",
-      "answer": "Replace this with a clear answer about session format, length, and what to expect."
+      "question": "Who is psychodynamic therapy for?",
+      "answer": "Answer goes here..."
     },
     {
       "id": "faq-2",
-      "question": "How do I get started?",
-      "answer": "Replace this with steps for booking an initial conversation or first appointment."
+      "question": "Question?",
+      "answer": "Answer goes here..."
     }
   ]
 }
