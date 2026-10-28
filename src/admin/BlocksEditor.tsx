@@ -6,6 +6,7 @@ import type {
   ImageFrame,
   TextAlign,
 } from '../content/types'
+import ImageUploadField from './ImageUploadField'
 import MarkdownEditor from './MarkdownEditor'
 import { newId } from './newId'
 
@@ -127,25 +128,6 @@ export default function BlocksEditor({
       buttons.splice(nextIndex, 0, item)
       return { ...current, buttons }
     })
-  }
-
-  async function handleBlockImageUpload(
-    blockId: string,
-    file: File | undefined,
-  ) {
-    if (!file) return
-    try {
-      const src = await uploadImage(file)
-      onChange(
-        blocks.map((block) => {
-          if (block.id !== blockId) return block
-          if (block.type !== 'image' && block.type !== 'imageText') return block
-          return { ...block, image: { ...block.image, src } }
-        }),
-      )
-    } catch (err) {
-      onError(err instanceof Error ? err.message : 'Upload failed')
-    }
   }
 
   return (
@@ -345,13 +327,23 @@ export default function BlocksEditor({
                 ) : (
                   <p className="admin-hint">No image uploaded yet.</p>
                 )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    void handleBlockImageUpload(block.id, e.target.files?.[0])
-                    e.target.value = ''
-                  }}
+                <ImageUploadField
+                  uploadImage={uploadImage}
+                  onUploaded={(src) =>
+                    onChange(
+                      blocks.map((entry) => {
+                        if (entry.id !== block.id) return entry
+                        if (
+                          entry.type !== 'image' &&
+                          entry.type !== 'imageText'
+                        ) {
+                          return entry
+                        }
+                        return { ...entry, image: { ...entry.image, src } }
+                      }),
+                    )
+                  }
+                  onError={onError}
                 />
               </>
             ) : null}

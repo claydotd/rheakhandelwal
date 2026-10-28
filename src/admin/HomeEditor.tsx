@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { HomePageContent, SiteContent } from '../content/types'
 import { useSiteContent } from '../content/useSiteContent'
 import BlocksEditor from './BlocksEditor'
+import ImageUploadField from './ImageUploadField'
 import { newId } from './newId'
 import './admin.css'
 
@@ -40,24 +41,6 @@ export default function HomeEditor() {
       setStatusKind('error')
     } finally {
       setSaving(false)
-    }
-  }
-
-  async function handleHeroUpload(file: File | undefined) {
-    if (!file) return
-    try {
-      const src = await uploadImage(file)
-      setDraft({
-        ...homeDraft,
-        heroImage: {
-          id: homeDraft.heroImage?.id ?? newId('hero'),
-          src,
-          alt: homeDraft.heroImage?.alt ?? '',
-        },
-      })
-    } catch (err) {
-      setStatus(err instanceof Error ? err.message : 'Upload failed')
-      setStatusKind('error')
     }
   }
 
@@ -129,12 +112,21 @@ export default function HomeEditor() {
             </div>
           </div>
         ) : null}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            void handleHeroUpload(e.target.files?.[0])
-            e.target.value = ''
+        <ImageUploadField
+          uploadImage={uploadImage}
+          onUploaded={(src) =>
+            setDraft({
+              ...homeDraft,
+              heroImage: {
+                id: homeDraft.heroImage?.id ?? newId('hero'),
+                src,
+                alt: homeDraft.heroImage?.alt ?? '',
+              },
+            })
+          }
+          onError={(message) => {
+            setStatus(message)
+            setStatusKind('error')
           }}
         />
       </div>

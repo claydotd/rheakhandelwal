@@ -220,11 +220,70 @@
   box-shadow: 0 0 0 3px var(--admin-focus);
 }
 
-.admin-field input[type="file"] {
+.admin-field input[type="file"],
+.admin-image-upload input[type="file"] {
   padding: 0.55rem;
   background: var(--admin-surface-muted);
   border-style: dashed;
   cursor: pointer;
+}
+
+.admin-image-upload input[type="file"]:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.admin-image-upload {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.admin-upload-status {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--admin-radius);
+  border: 1px solid var(--admin-border);
+  background: var(--admin-surface-muted);
+  font-size: 0.88rem;
+  color: var(--admin-text);
+}
+
+.admin-upload-status__phase {
+  font-weight: 600;
+}
+
+.admin-upload-status__name {
+  color: var(--admin-text-muted);
+  word-break: break-all;
+}
+
+.admin-upload-status__sizes {
+  font-variant-numeric: tabular-nums;
+  color: var(--admin-text);
+}
+
+.admin-upload-status--busy {
+  border-color: color-mix(in srgb, var(--admin-accent) 35%, var(--admin-border));
+}
+
+.admin-upload-status--ok {
+  border-color: color-mix(in srgb, #2f6b3a 40%, var(--admin-border));
+  background: color-mix(in srgb, #2f6b3a 8%, var(--admin-surface));
+}
+
+.admin-upload-status--ok .admin-upload-status__phase {
+  color: #2f6b3a;
+}
+
+.admin-upload-status--error {
+  border-color: color-mix(in srgb, #a33b2d 40%, var(--admin-border));
+  background: color-mix(in srgb, #a33b2d 8%, var(--admin-surface));
+}
+
+.admin-upload-status--error .admin-upload-status__phase {
+  color: #a33b2d;
 }
 
 .admin-field-row {
