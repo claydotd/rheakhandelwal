@@ -30,19 +30,15 @@ localStorage.removeItem('rk-site-content')
 
 ## Deploy to GitHub Pages (prototype)
 
-Keeps `base: /rheakhandelwal/` and `VITE_CONTENT_BACKEND=local` (default).
+Deploys via GitHub Actions on every push to `main` (workflow: [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)). Build keeps `base: /rheakhandelwal/` and `VITE_CONTENT_BACKEND=local`.
 
 1. Push this repo to GitHub (repo name should match the Vite base: `rheakhandelwal`).
-2. In **Settings → Pages**, set source to the `gh-pages` branch.
-3. Deploy:
-
-```bash
-npm run deploy
-```
+2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
+3. Push to `main` (or run the workflow manually under **Actions**). Site URL: `https://<user>.github.io/rheakhandelwal/`.
 
 Admin works on GitHub Pages with localStorage only (per visitor/browser). Contact form UI works; submissions are not delivered until Netlify.
 
-If you use a **custom domain** on GitHub Pages, set `VITE_BASE=/` when building and set `pathSegmentsToKeep = 0` in `public/404.html`.
+If you use a **custom domain** on GitHub Pages, set `VITE_BASE=/` in the workflow build step and set `pathSegmentsToKeep = 0` in `public/404.html`.
 
 ## Deploy to Netlify (production)
 
