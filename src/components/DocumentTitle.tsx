@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-const SITE = 'Rhea Khandelwal'
+const SITE = 'Rhea Khandelwal Psychotherapy'
 
 const titles: Record<string, string> = {
   '/': SITE,
