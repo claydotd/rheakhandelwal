@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-import { seedWritePlugin } from './vite-plugin-seed'
+import { seedWritePlugin } from './vite-plugin-seed.ts'
 
 // https://vite.dev/config/
 // GitHub Pages default: /rheakhandelwal/
