@@ -1,0 +1,107 @@
+/**
+ * Legacy stylesheet kept for reference. The contact form is now native
+ * (Netlify Forms) and styled in src/index.css.
+ */
+
+:root {
+  --form-font: Georgia, 'Times New Roman', serif;
+  --form-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --form-text: #1a1a1a;
+  --form-muted: #5c5c5c;
+  --form-border: #c8c4bc;
+  --form-bg: #ffffff;
+  --form-accent: #2f4a3c;
+  --form-accent-hover: #243a2f;
+  --form-focus: #2f4a3c;
+  --form-error: #8b2e2e;
+  --form-radius: 4px;
+}
+
+/* Scope styles to common form wrappers if your provider adds a root class */
+.form-embed,
+form {
+  font-family: var(--form-font-sans);
+  color: var(--form-text);
+  font-size: 1rem;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.form-embed *,
+form * {
+  box-sizing: border-box;
+}
+
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--form-text);
+}
+
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='url'],
+input[type='number'],
+input[type='date'],
+select,
+textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--form-border);
+  border-radius: var(--form-radius);
+  background: var(--form-bg);
+  color: var(--form-text);
+  font: inherit;
+  margin-bottom: 1rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--form-focus);
+  outline-offset: 1px;
+  border-color: var(--form-focus);
+}
+
+textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+button,
+input[type='submit'],
+.form-submit {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--form-radius);
+  background: var(--form-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover,
+input[type='submit']:hover,
+.form-submit:hover {
+  background: var(--form-accent-hover);
+}
+
+.form-error,
+.error,
+.field-error {
+  color: var(--form-error);
+  font-size: 0.875rem;
+}
+
+.form-help,
+.help-text {
+  color: var(--form-muted);
+  font-size: 0.875rem;
+}

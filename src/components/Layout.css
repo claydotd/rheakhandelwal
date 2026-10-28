@@ -1,0 +1,18 @@
+.site-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+}
+
+.site-main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 2.75rem 1.5rem 4.5rem;
+}
+
+.site-main > .page > h1 {
+  max-width: 28ch;
+}
