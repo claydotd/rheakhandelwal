@@ -5,12 +5,14 @@ import './Layout.css'
 
 export default function Layout() {
   return (
-    <div className="site-shell">
+    <>
       <Header />
-      <main className="site-main">
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+      <div className="site-shell">
+        <main className="site-main">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </>
   )
 }

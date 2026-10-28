@@ -2,6 +2,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* Reserved for fixed header; keeps page content from jumping under it */
+  padding-top: var(--site-header-height, 4.75rem);
   overflow-x: clip;
 }
 
