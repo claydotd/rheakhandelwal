@@ -5,7 +5,7 @@ export type ImageRef = {
 }
 
 /** Background colour themes drawn from the site palette. */
-export type BlockTheme = 'bone' | 'olive' | 'steel' | 'slate'
+export type BlockTheme = 'cream' | 'pale-honey' | 'golden-honey' | 'lilac'
 
 /** How an image sits within its block: padded inset, or flush to edges. */
 export type ImageFrame = 'framed' | 'full'
@@ -57,24 +57,44 @@ export type ButtonsBlock = {
   theme: BlockTheme
 }
 
+export type VideoBlock = {
+  id: string
+  type: 'video'
+  /** YouTube watch/share/embed URL (or bare video id). */
+  videoUrl: string
+  /** Accessible title for the iframe. */
+  title: string
+  theme: BlockTheme
+  imageFrame: ImageFrame
+}
+
+export type ImageVideoBlock = {
+  id: string
+  type: 'imageVideo'
+  image: ImageRef
+  videoUrl: string
+  title: string
+  imagePosition: 'left' | 'right'
+  theme: BlockTheme
+  imageFrame: ImageFrame
+  imageFit: ImageFit
+}
+
 export type ContentBlock =
   | ImageBlock
   | ImageTextBlock
   | TextBlock
   | ButtonsBlock
+  | VideoBlock
+  | ImageVideoBlock
 
 export type PageContent = {
   title: string
   blocks: ContentBlock[]
 }
 
-export type HeroPlacement = 'under' | 'below'
-
 export type HomePageContent = {
   title: string
-  heroImage: ImageRef | null
-  /** under = behind sticky header; below = flush under header (no gap) */
-  heroPlacement: HeroPlacement
   blocks: ContentBlock[]
 }
 

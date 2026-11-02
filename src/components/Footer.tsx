@@ -15,18 +15,15 @@ export default function Footer() {
           <p className="site-footer__copy">
             © {year} Rhea Khandelwal. All rights reserved.
           </p>
+          <a className="site-footer__email" href={`mailto:${EMAIL}`}>
+            {EMAIL}
+          </a>
           <p className="site-footer__bacp">
             BACP Registration: {BACP_REGISTRATION}
           </p>
         </div>
 
         <div className="site-footer__col site-footer__col--center">
-          <a className="site-footer__email" href={`mailto:${EMAIL}`}>
-            {EMAIL}
-          </a>
-          <Link className="site-footer__link" to="/contact">
-            Contact
-          </Link>
         </div>
 
         <div className="site-footer__col site-footer__col--end">
@@ -36,6 +33,9 @@ export default function Footer() {
           <Link className="site-footer__link" to="/how-i-work#faq-heading">
             Frequently Asked Questions
           </Link>
+          <a href="https://analoguegonedigital.co.uk" className="site-footer__credit">
+            Built by Analogue Gone Digital
+          </a>
         </div>
       </div>
     </footer>

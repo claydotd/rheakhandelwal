@@ -11,15 +11,29 @@ import type {
   TextAlign,
 } from './types'
 
-const BLOCK_THEMES: BlockTheme[] = ['bone', 'olive', 'steel', 'slate']
+const BLOCK_THEMES: BlockTheme[] = [
+  'cream',
+  'pale-honey',
+  'golden-honey',
+  'lilac',
+]
 const TEXT_ALIGNS: TextAlign[] = ['left', 'center', 'right', 'justify']
 
 function normalizeTheme(value: unknown): BlockTheme {
   // Migrate retired theme keys
-  if (value === 'sage' || value === 'fawn') return 'bone'
+  if (value === 'steel') return 'pale-honey'
+  if (
+    value === 'bone' ||
+    value === 'sage' ||
+    value === 'fawn' ||
+    value === 'olive' ||
+    value === 'slate'
+  ) {
+    return 'cream'
+  }
   return BLOCK_THEMES.includes(value as BlockTheme)
     ? (value as BlockTheme)
-    : 'bone'
+    : 'cream'
 }
 
 function normalizeImageFrame(value: unknown): ImageFrame {
@@ -120,6 +134,37 @@ function normalizeBlock(value: unknown, index: number): ContentBlock | null {
     return { id, type: 'buttons', buttons, theme }
   }
 
+  if (record.type === 'video') {
+    const videoUrl =
+      typeof record.videoUrl === 'string' ? record.videoUrl.trim() : ''
+    if (!videoUrl) return null
+    return {
+      id,
+      type: 'video',
+      videoUrl,
+      title: typeof record.title === 'string' ? record.title : '',
+      theme,
+      imageFrame: normalizeImageFrame(record.imageFrame),
+    }
+  }
+
+  if (record.type === 'imageVideo') {
+    const image = normalizeImageRef(record.image, `${id}-img`)
+    if (!image) return null
+    return {
+      id,
+      type: 'imageVideo',
+      image,
+      videoUrl:
+        typeof record.videoUrl === 'string' ? record.videoUrl.trim() : '',
+      title: typeof record.title === 'string' ? record.title : '',
+      imagePosition: record.imagePosition === 'right' ? 'right' : 'left',
+      theme,
+      imageFrame: normalizeImageFrame(record.imageFrame),
+      imageFit: normalizeImageFit(record.imageFit),
+    }
+  }
+
   return null
 }
 
@@ -148,7 +193,7 @@ function blocksFromLegacy(record: Record<string, unknown>): ContentBlock[] {
       id: 'migrated-body',
       type: 'text',
       text: record.body,
-      theme: 'bone',
+      theme: 'cream',
       textAlign: 'left',
     })
   }
@@ -157,7 +202,7 @@ function blocksFromLegacy(record: Record<string, unknown>): ContentBlock[] {
       id: `migrated-${image.id}`,
       type: 'image',
       image,
-      theme: 'bone',
+      theme: 'cream',
       imageFrame: 'framed',
       imageFit: 'crop',
     })
@@ -183,7 +228,7 @@ function migrateLegacyHomeCta(
       id: 'migrated-cta',
       type: 'buttons',
       buttons: [{ id: 'migrated-cta-btn', label, href }],
-      theme: 'bone',
+      theme: 'cream',
     },
   ]
 }
@@ -199,18 +244,11 @@ export function normalizePageContent(
   }
 }
 
-function normalizeHeroPlacement(raw: unknown): 'under' | 'below' {
-  return raw === 'under' ? 'under' : 'below'
-}
-
 export function normalizeHomePage(raw: unknown): HomePageContent {
   const record = asRecord(raw) ?? {}
-  const heroImage = normalizeImageRef(record.heroImage, 'hero')
 
   return {
     title: typeof record.title === 'string' ? record.title : 'Welcome',
-    heroImage,
-    heroPlacement: normalizeHeroPlacement(record.heroPlacement),
     blocks: migrateLegacyHomeCta(record, blocksFromLegacy(record)),
   }
 }

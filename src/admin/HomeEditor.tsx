@@ -2,8 +2,6 @@ import { useState } from 'react'
 import type { HomePageContent, SiteContent } from '../content/types'
 import { useSiteContent } from '../content/useSiteContent'
 import BlocksEditor from './BlocksEditor'
-import ImageUploadField from './ImageUploadField'
-import { newId } from './newId'
 import './admin.css'
 
 export default function HomeEditor() {
@@ -52,82 +50,6 @@ export default function HomeEditor() {
           id="home-title"
           value={homeDraft.title}
           onChange={(e) => setDraft({ ...homeDraft, title: e.target.value })}
-        />
-      </div>
-
-      <div className="admin-field">
-        <span className="label">Hero image</span>
-        {homeDraft.heroImage?.src ? (
-          <div className="admin-image-card">
-            <img
-              src={homeDraft.heroImage.src}
-              alt={homeDraft.heroImage.alt || 'Hero image'}
-            />
-            <label>
-              Alt text
-              <input
-                value={homeDraft.heroImage.alt}
-                onChange={(e) =>
-                  setDraft({
-                    ...homeDraft,
-                    heroImage: homeDraft.heroImage
-                      ? { ...homeDraft.heroImage, alt: e.target.value }
-                      : null,
-                  })
-                }
-              />
-            </label>
-            <fieldset className="admin-choice">
-              <legend>Hero placement</legend>
-              <label className="admin-choice__option">
-                <input
-                  type="radio"
-                  name="hero-placement"
-                  checked={homeDraft.heroPlacement !== 'under'}
-                  onChange={() =>
-                    setDraft({ ...homeDraft, heroPlacement: 'below' })
-                  }
-                />
-                Below header
-              </label>
-              <label className="admin-choice__option">
-                <input
-                  type="radio"
-                  name="hero-placement"
-                  checked={homeDraft.heroPlacement === 'under'}
-                  onChange={() =>
-                    setDraft({ ...homeDraft, heroPlacement: 'under' })
-                  }
-                />
-                Layered under header
-              </label>
-            </fieldset>
-            <div className="admin-image-card__actions">
-              <button
-                type="button"
-                onClick={() => setDraft({ ...homeDraft, heroImage: null })}
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-        ) : null}
-        <ImageUploadField
-          uploadImage={uploadImage}
-          onUploaded={(src) =>
-            setDraft({
-              ...homeDraft,
-              heroImage: {
-                id: homeDraft.heroImage?.id ?? newId('hero'),
-                src,
-                alt: homeDraft.heroImage?.alt ?? '',
-              },
-            })
-          }
-          onError={(message) => {
-            setStatus(message)
-            setStatusKind('error')
-          }}
         />
       </div>
 

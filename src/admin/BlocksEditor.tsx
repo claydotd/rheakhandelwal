@@ -31,7 +31,7 @@ function createBlock(type: ContentBlock['type']): ContentBlock {
       id: newId('block'),
       type: 'text',
       text: '',
-      theme: 'bone',
+      theme: 'cream',
       textAlign: 'left',
     }
   }
@@ -40,7 +40,7 @@ function createBlock(type: ContentBlock['type']): ContentBlock {
       id: newId('block'),
       type: 'image',
       image: emptyImage(),
-      theme: 'bone',
+      theme: 'cream',
       imageFrame: 'framed',
       imageFit: 'crop',
     }
@@ -50,7 +50,30 @@ function createBlock(type: ContentBlock['type']): ContentBlock {
       id: newId('block'),
       type: 'buttons',
       buttons: [emptyButton()],
-      theme: 'bone',
+      theme: 'cream',
+    }
+  }
+  if (type === 'video') {
+    return {
+      id: newId('block'),
+      type: 'video',
+      videoUrl: '',
+      title: '',
+      theme: 'cream',
+      imageFrame: 'framed',
+    }
+  }
+  if (type === 'imageVideo') {
+    return {
+      id: newId('block'),
+      type: 'imageVideo',
+      image: emptyImage(),
+      videoUrl: '',
+      title: '',
+      imagePosition: 'left',
+      theme: 'cream',
+      imageFrame: 'framed',
+      imageFit: 'crop',
     }
   }
   return {
@@ -59,15 +82,21 @@ function createBlock(type: ContentBlock['type']): ContentBlock {
     image: emptyImage(),
     text: '',
     imagePosition: 'left',
-    theme: 'bone',
+    theme: 'cream',
     imageFrame: 'framed',
     imageFit: 'crop',
   }
 }
 
 function parseTheme(value: string): BlockTheme {
-  if (value === 'olive' || value === 'steel' || value === 'slate') return value
-  return 'bone'
+  if (
+    value === 'pale-honey' ||
+    value === 'golden-honey' ||
+    value === 'lilac'
+  ) {
+    return value
+  }
+  return 'cream'
 }
 
 function parseImageFrame(value: string): ImageFrame {
@@ -86,8 +115,56 @@ function parseTextAlign(value: string): TextAlign {
 function blockLabel(type: ContentBlock['type']): string {
   if (type === 'image') return 'Image'
   if (type === 'imageText') return 'Image + text'
+  if (type === 'imageVideo') return 'Image + video'
+  if (type === 'video') return 'Video embed'
   if (type === 'buttons') return 'Buttons'
   return 'Text'
+}
+
+function hasMediaFrame(
+  block: ContentBlock,
+): block is Extract<
+  ContentBlock,
+  { type: 'image' | 'imageText' | 'imageVideo' | 'video' }
+> {
+  return (
+    block.type === 'image' ||
+    block.type === 'imageText' ||
+    block.type === 'imageVideo' ||
+    block.type === 'video'
+  )
+}
+
+function hasImageFit(
+  block: ContentBlock,
+): block is Extract<
+  ContentBlock,
+  { type: 'image' | 'imageText' | 'imageVideo' }
+> {
+  return (
+    block.type === 'image' ||
+    block.type === 'imageText' ||
+    block.type === 'imageVideo'
+  )
+}
+
+function hasImageField(
+  block: ContentBlock,
+): block is Extract<
+  ContentBlock,
+  { type: 'image' | 'imageText' | 'imageVideo' }
+> {
+  return (
+    block.type === 'image' ||
+    block.type === 'imageText' ||
+    block.type === 'imageVideo'
+  )
+}
+
+function hasVideoField(
+  block: ContentBlock,
+): block is Extract<ContentBlock, { type: 'video' | 'imageVideo' }> {
+  return block.type === 'video' || block.type === 'imageVideo'
 }
 
 export default function BlocksEditor({
@@ -177,10 +254,10 @@ export default function BlocksEditor({
                     }))
                   }
                 >
-                  <option value="bone">Bone</option>
-                  <option value="olive">Olive leaf</option>
-                  <option value="steel">Cool steel</option>
-                  <option value="slate">Blue slate</option>
+                  <option value="cream">Cream (default)</option>
+                  <option value="pale-honey">Pale honey</option>
+                  <option value="golden-honey">Golden honey</option>
+                  <option value="lilac">Lilac</option>
                 </select>
               </div>
 
@@ -209,15 +286,17 @@ export default function BlocksEditor({
                 </div>
               ) : null}
 
-              {block.type === 'image' || block.type === 'imageText' ? (
+              {hasMediaFrame(block) ? (
                 <div className="admin-field">
-                  <label htmlFor={`${block.id}-frame`}>Image layout</label>
+                  <label htmlFor={`${block.id}-frame`}>
+                    {block.type === 'video' ? 'Video layout' : 'Image layout'}
+                  </label>
                   <select
                     id={`${block.id}-frame`}
                     value={block.imageFrame}
                     onChange={(e) =>
                       updateBlock(block.id, (current) =>
-                        current.type === 'image' || current.type === 'imageText'
+                        hasMediaFrame(current)
                           ? {
                               ...current,
                               imageFrame: parseImageFrame(e.target.value),
@@ -232,7 +311,7 @@ export default function BlocksEditor({
                 </div>
               ) : null}
 
-              {block.type === 'image' || block.type === 'imageText' ? (
+              {hasImageFit(block) ? (
                 <div className="admin-field">
                   <label htmlFor={`${block.id}-fit`}>Image display</label>
                   <select
@@ -240,7 +319,7 @@ export default function BlocksEditor({
                     value={block.imageFit}
                     onChange={(e) =>
                       updateBlock(block.id, (current) =>
-                        current.type === 'image' || current.type === 'imageText'
+                        hasImageFit(current)
                           ? {
                               ...current,
                               imageFit: parseImageFit(e.target.value),
@@ -255,7 +334,7 @@ export default function BlocksEditor({
                 </div>
               ) : null}
 
-              {block.type === 'imageText' ? (
+              {block.type === 'imageText' || block.type === 'imageVideo' ? (
                 <div className="admin-field">
                   <label htmlFor={`${block.id}-position`}>Image position</label>
                   <select
@@ -263,7 +342,8 @@ export default function BlocksEditor({
                     value={block.imagePosition}
                     onChange={(e) =>
                       updateBlock(block.id, (current) =>
-                        current.type === 'imageText'
+                        current.type === 'imageText' ||
+                        current.type === 'imageVideo'
                           ? {
                               ...current,
                               imagePosition:
@@ -295,7 +375,44 @@ export default function BlocksEditor({
               />
             ) : null}
 
-            {block.type === 'image' || block.type === 'imageText' ? (
+            {hasVideoField(block) ? (
+              <div className="admin-field-row">
+                <div className="admin-field">
+                  <label htmlFor={`${block.id}-video`}>YouTube URL</label>
+                  <input
+                    id={`${block.id}-video`}
+                    value={block.videoUrl}
+                    placeholder="https://www.youtube.com/watch?v=…"
+                    onChange={(e) =>
+                      updateBlock(block.id, (current) =>
+                        hasVideoField(current)
+                          ? { ...current, videoUrl: e.target.value }
+                          : current,
+                      )
+                    }
+                  />
+                </div>
+                <div className="admin-field">
+                  <label htmlFor={`${block.id}-video-title`}>
+                    Video title (optional)
+                  </label>
+                  <input
+                    id={`${block.id}-video-title`}
+                    value={block.title}
+                    placeholder="Accessible iframe title"
+                    onChange={(e) =>
+                      updateBlock(block.id, (current) =>
+                        hasVideoField(current)
+                          ? { ...current, title: e.target.value }
+                          : current,
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            ) : null}
+
+            {hasImageField(block) ? (
               <>
                 {block.image.src ? (
                   <div className="admin-image-card">
@@ -309,8 +426,7 @@ export default function BlocksEditor({
                         value={block.image.alt}
                         onChange={(e) =>
                           updateBlock(block.id, (current) =>
-                            current.type === 'image' ||
-                            current.type === 'imageText'
+                            hasImageField(current)
                               ? {
                                   ...current,
                                   image: {
@@ -333,12 +449,7 @@ export default function BlocksEditor({
                     onChange(
                       blocks.map((entry) => {
                         if (entry.id !== block.id) return entry
-                        if (
-                          entry.type !== 'image' &&
-                          entry.type !== 'imageText'
-                        ) {
-                          return entry
-                        }
+                        if (!hasImageField(entry)) return entry
                         return { ...entry, image: { ...entry.image, src } }
                       }),
                     )
@@ -460,6 +571,18 @@ export default function BlocksEditor({
           onClick={() => onChange([...blocks, createBlock('imageText')])}
         >
           + Image + text
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange([...blocks, createBlock('video')])}
+        >
+          + Video embed
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange([...blocks, createBlock('imageVideo')])}
+        >
+          + Image + video
         </button>
         <button
           type="button"

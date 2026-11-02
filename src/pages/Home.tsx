@@ -8,16 +8,9 @@ export default function Home() {
   if (loading || error || !content) return status
 
   const page = content.pages.home
-  const heroPlacement = page.heroPlacement === 'under' ? 'under' : 'below'
 
   return (
-    <article className={`page home-page home-page--hero-${heroPlacement}`}>
-      {page.heroImage?.src ? (
-        <figure className="home-hero">
-          <img src={page.heroImage.src} alt={page.heroImage.alt || ''} />
-        </figure>
-      ) : null}
-
+    <article className="page home-page">
       <div className="home-intro">
         <h1>{page.title}</h1>
       </div>

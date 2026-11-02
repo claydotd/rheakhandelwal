@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import type { ContentBlock } from '../content/types'
+import { youtubeEmbedSrc } from '../content/videoEmbed'
 import MarkdownContent from './MarkdownContent'
 
 type ContentBlocksProps = {
@@ -19,6 +20,29 @@ function blockClassName(
     `content-block--theme-${block.theme}`,
     ...extras.filter(Boolean),
   ].join(' ')
+}
+
+function VideoEmbed({
+  videoUrl,
+  title,
+}: {
+  videoUrl: string
+  title: string
+}) {
+  const src = youtubeEmbedSrc(videoUrl)
+  if (!src) return null
+  return (
+    <div className="content-block__video">
+      <iframe
+        src={src}
+        title={title.trim() || 'Embedded video'}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="strict-origin-when-cross-origin"
+      />
+    </div>
+  )
 }
 
 export default function ContentBlocks({ blocks }: ContentBlocksProps) {
@@ -98,6 +122,58 @@ export default function ContentBlocks({ blocks }: ContentBlocksProps) {
                 )}
               </div>
             </div>
+          )
+        }
+
+        if (block.type === 'video') {
+          if (!youtubeEmbedSrc(block.videoUrl)) return null
+          return (
+            <section
+              key={block.id}
+              className={blockClassName(
+                block,
+                'content-block--video',
+                `content-block--frame-${block.imageFrame}`,
+              )}
+            >
+              <div className="content-block__inner">
+                <VideoEmbed videoUrl={block.videoUrl} title={block.title} />
+              </div>
+            </section>
+          )
+        }
+
+        if (block.type === 'imageVideo') {
+          const hasImage = Boolean(block.image.src)
+          const hasVideo = Boolean(youtubeEmbedSrc(block.videoUrl))
+          if (!hasImage && !hasVideo) return null
+          return (
+            <section
+              key={block.id}
+              className={blockClassName(
+                block,
+                'content-block--image-video',
+                `content-block--image-${block.imagePosition}`,
+                `content-block--frame-${block.imageFrame}`,
+                `content-block--fit-${block.imageFit}`,
+              )}
+            >
+              <div className="content-block__inner content-block__inner--image-video">
+                {hasImage ? (
+                  <figure className="content-block__media">
+                    <img src={block.image.src} alt={block.image.alt || ''} />
+                  </figure>
+                ) : null}
+                {hasVideo ? (
+                  <div className="content-block__video-slot">
+                    <VideoEmbed
+                      videoUrl={block.videoUrl}
+                      title={block.title}
+                    />
+                  </div>
+                ) : null}
+              </div>
+            </section>
           )
         }
 

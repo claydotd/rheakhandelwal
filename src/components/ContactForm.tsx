@@ -65,7 +65,7 @@ export default function ContactForm() {
 
       <div className="contact-form__row">
         <label className="contact-form__field">
-          <span>First Name</span>
+          <span>First Name <span className="contact-form__field-required">(required)</span></span>
           <input
             type="text"
             name="first-name"
@@ -75,7 +75,7 @@ export default function ContactForm() {
         </label>
 
         <label className="contact-form__field">
-          <span>Last Name</span>
+          <span>Last Name <span className="contact-form__field-required">(required)</span></span>
           <input
             type="text"
             name="last-name"
@@ -86,17 +86,17 @@ export default function ContactForm() {
       </div>
 
       <label className="contact-form__field">
-        <span>Email</span>
+        <span>Email <span className="contact-form__field-required">(required)</span></span>
         <input type="email" name="email" required autoComplete="email" />
       </label>
 
       <label className="contact-form__field">
-        <span>Phone</span>
+        <span>Phone <span className="contact-form__field-required">(required)</span></span>
         <input type="tel" name="phone" required autoComplete="tel" />
       </label>
 
       <label className="contact-form__field">
-        <span>Tell me a bit about why you&apos;re getting in touch</span>
+        <span>Message <span className="contact-form__field-required">(required)</span></span>
         <textarea name="message" required rows={6} />
       </label>
 

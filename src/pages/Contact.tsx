@@ -15,9 +15,6 @@ export default function Contact() {
   return (
     <article className="page contact-page">
       <h1>{page.title}</h1>
-      <a className="contact-page__email" href={`mailto:${EMAIL}`}>
-        {EMAIL}
-      </a>
       <div className="contact-page__layout">
         <div className="contact-page__content">
           <ContentBlocks blocks={page.blocks} />

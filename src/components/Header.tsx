@@ -1,36 +1,17 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import './Header.css'
 
 const navItems: { to: string; label: string; end?: boolean }[] = [
   { to: '/', label: 'Home', end: true },
-  { to: '/how-i-work', label: 'How I Work' },
-  { to: '/fees', label: 'Fees' },
   { to: '/about', label: 'About Me' },
+  { to: '/how-i-work', label: 'How I Work' },
   { to: '/contact', label: 'Contact' },
 ]
 
 export default function Header() {
-  const headerRef = useRef<HTMLElement>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
-
-  useLayoutEffect(() => {
-    const el = headerRef.current
-    if (!el) return
-
-    const setHeight = () => {
-      document.documentElement.style.setProperty(
-        '--site-header-height',
-        `${el.getBoundingClientRect().height}px`,
-      )
-    }
-
-    setHeight()
-    const observer = new ResizeObserver(setHeight)
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
 
   useEffect(() => {
     setMenuOpen(false)
@@ -57,10 +38,7 @@ export default function Header() {
   }, [menuOpen])
 
   return (
-    <header
-      className={`site-header${menuOpen ? ' is-menu-open' : ''}`}
-      ref={headerRef}
-    >
+    <header className={`site-header${menuOpen ? ' is-menu-open' : ''}`}>
       <div className="site-header__inner">
         <NavLink to="/" className="site-header__brand" end>
           Rhea Khandelwal Psychotherapy
