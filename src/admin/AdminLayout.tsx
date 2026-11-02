@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { getAdminToken, logoutAdmin } from '../content/auth'
 import { isLocalBackend } from '../content/backend'
+import { clearLocalContentOverlay } from '../content/store'
 import AdminLogin from './AdminLogin'
 import './admin.css'
 
@@ -26,9 +27,22 @@ export default function AdminLayout() {
   return (
     <div className="admin-shell">
       {local ? (
-        <p className="admin-banner">
-          Prototype mode: Changes save only to this browser. Changes are not saved to the server.
-        </p>
+        <div className="admin-banner" role="status">
+          <p>
+            Prototype mode: Changes save only to this browser. Changes are not
+            saved to the server.
+          </p>
+          <button
+            type="button"
+            className="admin-banner__reset"
+            onClick={() => {
+              clearLocalContentOverlay()
+              window.location.reload()
+            }}
+          >
+            Reset cache
+          </button>
+        </div>
       ) : null}
       <header className="admin-header">
         <h1>Site admin</h1>

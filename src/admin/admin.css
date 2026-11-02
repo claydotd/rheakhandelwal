@@ -33,12 +33,43 @@
 }
 
 .admin-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
   margin: 0;
   padding: 0.7rem 1.25rem;
   background: var(--pale-honey);
   border-bottom: 1px solid var(--golden-honey);
   color: var(--text);
   font-size: 0.9rem;
+}
+
+.admin-banner p {
+  margin: 0;
+  color: var(--text);
+}
+
+.admin-banner__reset {
+  flex-shrink: 0;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--golden-honey);
+  border-radius: var(--admin-radius);
+  background: var(--admin-surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.admin-banner__reset:hover {
+  background: var(--pearl);
+  border-color: var(--text-muted);
 }
 
 .admin-header {
