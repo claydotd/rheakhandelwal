@@ -3,8 +3,6 @@ import ContentBlocks from '../components/ContentBlocks'
 import ContentStatus from '../components/ContentStatus'
 import { useSiteContent } from '../content/useSiteContent'
 
-const EMAIL = 'hello@rheakhandelwaltherapy.co.uk'
-
 export default function Contact() {
   const { content, loading, error } = useSiteContent()
   const status = <ContentStatus loading={loading} error={error} />
