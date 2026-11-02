@@ -33,7 +33,7 @@
   letter-spacing: -0.01em;
   color: var(--text);
   text-decoration: none;
-  transition: color 180ms var(--ease-out);
+  transition: color var(--transition-standard);
 }
 
 .site-header__brand:hover {
@@ -54,7 +54,7 @@
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  transition: background 180ms var(--ease-out), color 180ms var(--ease-out);
+  transition: background var(--transition-standard), color var(--transition-standard);
 }
 
 .site-header__toggle:hover {
@@ -81,9 +81,9 @@
   border-radius: 1px;
   background: currentColor;
   transition:
-    transform 240ms var(--ease-out),
-    opacity 180ms var(--ease-out),
-    top 240ms var(--ease-out);
+    transform var(--transition-standard),
+    opacity var(--transition-standard),
+    top var(--transition-standard);
 }
 
 .site-header__toggle-bars span:nth-child(1) {
@@ -132,7 +132,7 @@
   font-weight: 400;
   letter-spacing: 0.01em;
   padding: 0.4rem 0.7rem;
-  transition: color 180ms var(--ease-out);
+  transition: color var(--transition-standard);
 }
 
 .site-header__nav a::after {
@@ -145,7 +145,7 @@
   background: var(--walnut);
   transform: scaleX(0);
   transform-origin: center;
-  transition: transform 220ms var(--ease-out);
+  transition: transform var(--transition-standard);
 }
 
 .site-header__nav a:hover {
@@ -198,10 +198,10 @@
     visibility: hidden;
     transform: translateY(-0.5rem);
     transition:
-      max-height 320ms var(--ease-out),
-      opacity 220ms var(--ease-out),
-      visibility 220ms var(--ease-out),
-      transform 320ms var(--ease-out);
+      max-height var(--transition-standard),
+      opacity var(--transition-standard),
+      visibility var(--transition-standard),
+      transform var(--transition-standard);
   }
 
   .site-header.is-menu-open .site-header__nav {

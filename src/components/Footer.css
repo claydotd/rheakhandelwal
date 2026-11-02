@@ -44,14 +44,14 @@
   color: var(--pearl);
   text-decoration: none;
   width: fit-content;
-  transition: color 180ms var(--ease-out);
+  transition: color var(--transition-standard);
 }
 
 .site-footer__credit {
   color: var(--lilac);
   text-decoration: none;
   width: fit-content;
-  transition: color 180ms var(--ease-out);
+  transition: color var(--transition-standard);
 }
 
 .site-footer__link:hover {
@@ -62,7 +62,7 @@
   color: var(--lilac);
   text-decoration: none;
   width: fit-content;
-  transition: color 180ms var(--ease-out);
+  transition: color var(--transition-standard);
 }
 
 @media (min-width: 768px) {
