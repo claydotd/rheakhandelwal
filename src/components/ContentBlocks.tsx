@@ -143,26 +143,25 @@ export default function ContentBlocks({ blocks }: ContentBlocksProps) {
           )
         }
 
-        if (block.type === 'imageVideo') {
-          const hasImage = Boolean(block.image.src)
+        if (block.type === 'textVideo') {
+          const hasText = Boolean(block.text.trim())
           const hasVideo = Boolean(youtubeEmbedSrc(block.videoUrl))
-          if (!hasImage && !hasVideo) return null
+          if (!hasText && !hasVideo) return null
           return (
             <section
               key={block.id}
               className={blockClassName(
                 block,
-                'content-block--image-video',
-                `content-block--image-${block.imagePosition}`,
+                'content-block--text-video',
+                `content-block--video-${block.videoPosition}`,
                 `content-block--frame-${block.imageFrame}`,
-                `content-block--fit-${block.imageFit}`,
               )}
             >
-              <div className="content-block__inner content-block__inner--image-video">
-                {hasImage ? (
-                  <figure className="content-block__media">
-                    <img src={block.image.src} alt={block.image.alt || ''} />
-                  </figure>
+              <div className="content-block__inner content-block__inner--text-video">
+                {hasText ? (
+                  <div className="content-block__text">
+                    <MarkdownContent content={block.text} />
+                  </div>
                 ) : null}
                 {hasVideo ? (
                   <div className="content-block__video-slot">

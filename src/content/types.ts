@@ -68,16 +68,15 @@ export type VideoBlock = {
   imageFrame: ImageFrame
 }
 
-export type ImageVideoBlock = {
+export type TextVideoBlock = {
   id: string
-  type: 'imageVideo'
-  image: ImageRef
+  type: 'textVideo'
+  text: string
   videoUrl: string
   title: string
-  imagePosition: 'left' | 'right'
+  videoPosition: 'left' | 'right'
   theme: BlockTheme
   imageFrame: ImageFrame
-  imageFit: ImageFit
 }
 
 export type ContentBlock =
@@ -86,7 +85,7 @@ export type ContentBlock =
   | TextBlock
   | ButtonsBlock
   | VideoBlock
-  | ImageVideoBlock
+  | TextVideoBlock
 
 export type PageContent = {
   title: string

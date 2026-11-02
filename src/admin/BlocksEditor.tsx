@@ -63,17 +63,16 @@ function createBlock(type: ContentBlock['type']): ContentBlock {
       imageFrame: 'framed',
     }
   }
-  if (type === 'imageVideo') {
+  if (type === 'textVideo') {
     return {
       id: newId('block'),
-      type: 'imageVideo',
-      image: emptyImage(),
+      type: 'textVideo',
+      text: '',
       videoUrl: '',
       title: '',
-      imagePosition: 'left',
+      videoPosition: 'right',
       theme: 'cream',
       imageFrame: 'framed',
-      imageFit: 'crop',
     }
   }
   return {
@@ -115,7 +114,7 @@ function parseTextAlign(value: string): TextAlign {
 function blockLabel(type: ContentBlock['type']): string {
   if (type === 'image') return 'Image'
   if (type === 'imageText') return 'Image + text'
-  if (type === 'imageVideo') return 'Image + video'
+  if (type === 'textVideo') return 'Text + video'
   if (type === 'video') return 'Video embed'
   if (type === 'buttons') return 'Buttons'
   return 'Text'
@@ -125,12 +124,12 @@ function hasMediaFrame(
   block: ContentBlock,
 ): block is Extract<
   ContentBlock,
-  { type: 'image' | 'imageText' | 'imageVideo' | 'video' }
+  { type: 'image' | 'imageText' | 'textVideo' | 'video' }
 > {
   return (
     block.type === 'image' ||
     block.type === 'imageText' ||
-    block.type === 'imageVideo' ||
+    block.type === 'textVideo' ||
     block.type === 'video'
   )
 }
@@ -139,32 +138,37 @@ function hasImageFit(
   block: ContentBlock,
 ): block is Extract<
   ContentBlock,
-  { type: 'image' | 'imageText' | 'imageVideo' }
+  { type: 'image' | 'imageText' }
 > {
-  return (
-    block.type === 'image' ||
-    block.type === 'imageText' ||
-    block.type === 'imageVideo'
-  )
+  return block.type === 'image' || block.type === 'imageText'
 }
 
 function hasImageField(
   block: ContentBlock,
 ): block is Extract<
   ContentBlock,
-  { type: 'image' | 'imageText' | 'imageVideo' }
+  { type: 'image' | 'imageText' }
 > {
-  return (
-    block.type === 'image' ||
-    block.type === 'imageText' ||
-    block.type === 'imageVideo'
-  )
+  return block.type === 'image' || block.type === 'imageText'
 }
 
 function hasVideoField(
   block: ContentBlock,
-): block is Extract<ContentBlock, { type: 'video' | 'imageVideo' }> {
-  return block.type === 'video' || block.type === 'imageVideo'
+): block is Extract<ContentBlock, { type: 'video' | 'textVideo' }> {
+  return block.type === 'video' || block.type === 'textVideo'
+}
+
+function hasTextField(
+  block: ContentBlock,
+): block is Extract<
+  ContentBlock,
+  { type: 'text' | 'imageText' | 'textVideo' }
+> {
+  return (
+    block.type === 'text' ||
+    block.type === 'imageText' ||
+    block.type === 'textVideo'
+  )
 }
 
 export default function BlocksEditor({
@@ -289,7 +293,9 @@ export default function BlocksEditor({
               {hasMediaFrame(block) ? (
                 <div className="admin-field">
                   <label htmlFor={`${block.id}-frame`}>
-                    {block.type === 'video' ? 'Video layout' : 'Image layout'}
+                    {block.type === 'video' || block.type === 'textVideo'
+                      ? 'Video layout'
+                      : 'Image layout'}
                   </label>
                   <select
                     id={`${block.id}-frame`}
@@ -334,7 +340,7 @@ export default function BlocksEditor({
                 </div>
               ) : null}
 
-              {block.type === 'imageText' || block.type === 'imageVideo' ? (
+              {block.type === 'imageText' ? (
                 <div className="admin-field">
                   <label htmlFor={`${block.id}-position`}>Image position</label>
                   <select
@@ -342,8 +348,7 @@ export default function BlocksEditor({
                     value={block.imagePosition}
                     onChange={(e) =>
                       updateBlock(block.id, (current) =>
-                        current.type === 'imageText' ||
-                        current.type === 'imageVideo'
+                        current.type === 'imageText'
                           ? {
                               ...current,
                               imagePosition:
@@ -358,18 +363,40 @@ export default function BlocksEditor({
                   </select>
                 </div>
               ) : null}
+
+              {block.type === 'textVideo' ? (
+                <div className="admin-field">
+                  <label htmlFor={`${block.id}-position`}>Video position</label>
+                  <select
+                    id={`${block.id}-position`}
+                    value={block.videoPosition}
+                    onChange={(e) =>
+                      updateBlock(block.id, (current) =>
+                        current.type === 'textVideo'
+                          ? {
+                              ...current,
+                              videoPosition:
+                                e.target.value === 'left' ? 'left' : 'right',
+                            }
+                          : current,
+                      )
+                    }
+                  >
+                    <option value="left">Video left</option>
+                    <option value="right">Video right</option>
+                  </select>
+                </div>
+              ) : null}
             </div>
 
-            {block.type === 'text' || block.type === 'imageText' ? (
+            {hasTextField(block) ? (
               <MarkdownEditor
                 id={`${block.id}-text`}
                 label="Text"
                 value={block.text}
                 onChange={(text) =>
                   updateBlock(block.id, (current) =>
-                    current.type === 'text' || current.type === 'imageText'
-                      ? { ...current, text }
-                      : current,
+                    hasTextField(current) ? { ...current, text } : current,
                   )
                 }
               />
@@ -580,9 +607,9 @@ export default function BlocksEditor({
         </button>
         <button
           type="button"
-          onClick={() => onChange([...blocks, createBlock('imageVideo')])}
+          onClick={() => onChange([...blocks, createBlock('textVideo')])}
         >
-          + Image + video
+          + Text + video
         </button>
         <button
           type="button"

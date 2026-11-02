@@ -148,20 +148,28 @@ function normalizeBlock(value: unknown, index: number): ContentBlock | null {
     }
   }
 
-  if (record.type === 'imageVideo') {
-    const image = normalizeImageRef(record.image, `${id}-img`)
-    if (!image) return null
+  if (record.type === 'textVideo' || record.type === 'imageVideo') {
+    const videoUrl =
+      typeof record.videoUrl === 'string' ? record.videoUrl.trim() : ''
+    const text = typeof record.text === 'string' ? record.text : ''
+    if (!videoUrl && !text.trim()) return null
+    // Legacy imageVideo used imagePosition; video inherits that side.
+    const videoPosition =
+      record.videoPosition === 'right' ||
+      record.videoPosition === 'left'
+        ? record.videoPosition
+        : record.imagePosition === 'right'
+          ? 'right'
+          : 'left'
     return {
       id,
-      type: 'imageVideo',
-      image,
-      videoUrl:
-        typeof record.videoUrl === 'string' ? record.videoUrl.trim() : '',
+      type: 'textVideo',
+      text,
+      videoUrl,
       title: typeof record.title === 'string' ? record.title : '',
-      imagePosition: record.imagePosition === 'right' ? 'right' : 'left',
+      videoPosition,
       theme,
       imageFrame: normalizeImageFrame(record.imageFrame),
-      imageFit: normalizeImageFit(record.imageFit),
     }
   }
 
