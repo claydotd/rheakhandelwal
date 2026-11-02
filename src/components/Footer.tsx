@@ -33,9 +33,7 @@ export default function Footer() {
           <Link className="site-footer__link" to="/how-i-work#faq-heading">
             Frequently Asked Questions
           </Link>
-          <a href="https://analoguegonedigital.co.uk" className="site-footer__credit">
-            Built by Analogue Gone Digital
-          </a>
+          <span className="site-footer__credit">Built by <a className="site-footer__credit-link" href="https://analoguegonedigital.co.uk">Analogue Gone Digital</a></span>
         </div>
       </div>
     </footer>

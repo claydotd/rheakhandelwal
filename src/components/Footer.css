@@ -58,6 +58,13 @@
   color: var(--golden-honey);
 }
 
+.site-footer__credit-link {
+  color: var(--lilac);
+  text-decoration: none;
+  width: fit-content;
+  transition: color 180ms var(--ease-out);
+}
+
 @media (min-width: 768px) {
   .site-footer__inner {
     grid-template-columns: 1fr auto 1fr;
