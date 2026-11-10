@@ -7,8 +7,7 @@ React + Vite multi-page site with a simple admin CMS. Content is driven by a JSO
 | Route | Page |
 | --- | --- |
 | `/` | Home |
-| `/how-i-work` | How I Work (includes FAQ section) |
-| `/fees` | Fees |
+| `/approach` | Approach (includes FAQ section) |
 | `/about` | About Me |
 | `/contact` | Contact (Will use Netlify forms) |
 | `/admin` | Content admin (not linked in the public nav) |

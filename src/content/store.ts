@@ -30,8 +30,14 @@ function readLocalOverlay(): SiteContent | null {
   }
 }
 
-function writeLocalOverlay(content: SiteContent): void {
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(content))
+function isQuotaExceeded(err: unknown): boolean {
+  return (
+    err instanceof DOMException &&
+    (err.name === 'QuotaExceededError' ||
+      err.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+      // Safari sometimes uses code 22
+      err.code === 22)
+  )
 }
 
 async function fileToDataUrl(file: File): Promise<string> {
@@ -50,25 +56,45 @@ async function getLocalContent(): Promise<SiteContent> {
   return readLocalOverlay() ?? (await fetchSeed())
 }
 
-async function writeSeedFiles(content: SiteContent): Promise<void> {
-  // Only available while `npm run dev` is running (Vite seedWritePlugin).
+/** Dev-only: Vite seedWritePlugin persists into committed seed JSON files. */
+async function writeSeedFiles(content: SiteContent): Promise<boolean> {
   try {
     const response = await fetch('/__seed', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(content),
     })
-    if (!response.ok) {
-      throw new Error('Seed write failed')
-    }
+    return response.ok
   } catch {
-    // Preview / GitHub Pages have no write endpoint; localStorage still holds the edit.
+    // Preview / GitHub Pages have no write endpoint.
+    return false
   }
 }
 
 async function saveLocalContent(content: SiteContent): Promise<void> {
-  writeLocalOverlay(content)
-  await writeSeedFiles(content)
+  // Prefer writing seed files in dev — they are not size-capped like localStorage.
+  const seedWritten = await writeSeedFiles(content)
+
+  try {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(content))
+    return
+  } catch (err) {
+    if (!isQuotaExceeded(err)) {
+      if (seedWritten) return
+      throw new Error('Failed to save site content')
+    }
+  }
+
+  // localStorage is full (usually from base64 images in the draft).
+  if (seedWritten) {
+    // Latest content is on disk; drop the bloated overlay so loads use the seed.
+    clearLocalContentOverlay()
+    return
+  }
+
+  throw new Error(
+    'Browser storage is full. Use “Reset local content” in the admin banner, then save again — or remove large embedded images.',
+  )
 }
 
 async function uploadLocalImage(file: File): Promise<string> {

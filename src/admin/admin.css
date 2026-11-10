@@ -1,6 +1,6 @@
 /* Admin UI — lean tokens; surfaces stay white */
 .admin-shell {
-  --admin-bg: var(--bg);
+  --admin-bg: var(--warm-cream);
   --admin-surface: var(--white);
   --admin-border: var(--border);
   --admin-radius: var(--radius);
@@ -149,8 +149,10 @@
 }
 
 .admin-main {
+  width: 100%;
+  max-width: none;
   padding: 1.5rem 1.25rem 4rem;
-  max-width: 48rem;
+  box-sizing: border-box;
 }
 
 .admin-login {
@@ -205,6 +207,29 @@
   gap: 1.35rem;
 }
 
+.admin-section {
+  display: grid;
+  gap: 0.95rem;
+  padding: 1.1rem;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  background: var(--admin-surface);
+}
+
+.admin-section h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.admin-section .admin-hint {
+  margin-top: -0.25rem;
+}
+
+.admin-section .admin-hint code {
+  font-size: 0.85em;
+}
+
 .admin-field {
   display: grid;
   gap: 0.45rem;
@@ -221,6 +246,8 @@
 .admin-field textarea,
 .admin-field select {
   width: 100%;
+  min-height: 2.85rem;
+  box-sizing: border-box;
   padding: 0.7rem 0.8rem;
   border: 1px solid var(--admin-border);
   border-radius: var(--admin-radius);
@@ -309,13 +336,73 @@
 .admin-field-row {
   display: grid;
   gap: 1rem;
+  align-items: start;
 }
 
 @media (min-width: 40rem) {
   .admin-field-row {
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   }
+
+  .admin-field-row--pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
+
+/* Dense controls for section/block layout settings */
+.admin-block-settings {
+  gap: 0.5rem 0.6rem;
+  align-items: end;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  background: color-mix(in srgb, var(--admin-bg) 40%, var(--admin-surface));
+}
+
+@media (min-width: 40rem) {
+  .admin-block-settings {
+    grid-template-columns: repeat(auto-fit, minmax(7.25rem, 1fr));
+  }
+}
+
+.admin-block-settings .admin-field {
+  gap: 0.2rem;
+}
+
+.admin-block-settings .admin-field label,
+.admin-block-settings .admin-field > span.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--text-muted);
+}
+
+.admin-block-settings .admin-field input,
+.admin-block-settings .admin-field select {
+  min-height: 2rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.admin-block-settings .admin-field label:has(input[type='checkbox']) {
+  min-height: 2rem;
+  margin: 0;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  background: var(--admin-surface);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+  box-sizing: border-box;
+}
+
+.admin-block-settings .admin-field label:has(input[type='checkbox']:checked) {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--admin-border));
+  background: color-mix(in srgb, var(--accent) 8%, var(--admin-surface));
+}
+
 
 .admin-hint {
   margin: 0;
@@ -366,6 +453,8 @@
 .admin-block-card {
   display: grid;
   gap: 0.9rem;
+  align-content: start;
+  height: fit-content;
   padding: 1.1rem;
   border: 1px solid var(--admin-border);
   border-radius: var(--admin-radius);
@@ -394,11 +483,137 @@
 .admin-button-card__actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.5rem;
 }
 
 .admin-block-add {
   padding-top: 0.25rem;
+  align-self: start;
+}
+
+.admin-section-add {
+  align-items: center;
+}
+
+.admin-section-add__label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-right: 0.25rem;
+}
+
+.admin-section-columns {
+  display: grid;
+  gap: 0.85rem;
+  align-items: start;
+}
+
+@media (min-width: 48rem) {
+  .admin-section-columns[data-columns='2'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-section-columns[data-columns='3'] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .admin-section-columns[data-columns='4'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .admin-section-columns[data-columns='4'] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.admin-column-slot {
+  display: grid;
+  gap: 0.65rem;
+  align-content: start;
+  align-self: start;
+  min-width: 0;
+  height: fit-content;
+  padding: 0.85rem;
+  border: 1px dashed var(--admin-border);
+  border-radius: var(--admin-radius);
+  background: color-mix(in srgb, var(--admin-bg) 55%, var(--admin-surface));
+}
+
+.admin-column-slot__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.65rem 0.85rem;
+}
+
+.admin-column-slot__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.admin-column-slot__width {
+  flex: 1 1 7rem;
+  min-width: 6.5rem;
+  max-width: 9rem;
+  margin: 0;
+}
+
+.admin-column-slot__width label {
+  font-size: 0.8rem;
+}
+
+.admin-column-block {
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-column-block:last-of-type {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.admin-column-block__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.admin-column-block__header strong {
+  font-size: 0.9rem;
+}
+
+.admin-column-block__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.admin-block-add--column {
+  padding-top: 0;
+}
+
+.admin-field label:has(input[type='checkbox']) {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 500;
+}
+
+.admin-field label:has(input[type='checkbox']) input {
+  width: auto;
+  margin: 0;
 }
 
 .admin-button-list {
@@ -616,11 +831,19 @@
 .admin-login button,
 .admin-image-card__actions button,
 .admin-faq-card__actions button,
+.admin-faq-list > button,
 .admin-block-card__actions button,
 .admin-block-add button,
 .admin-button-card__actions button,
 .admin-button-list > button,
-.admin-header__actions button {
+.admin-header__actions button,
+.admin-column-block__actions button,
+.admin-column-block__clear,
+.admin-section-card .admin-field-row > .admin-field > button,
+.admin-section-card .admin-block-settings .admin-field > button {
+  width: auto;
+  height: auto;
+  align-self: center;
   padding: 0.55rem 1rem;
   border: 1px solid var(--admin-border);
   border-radius: var(--admin-radius);
@@ -639,13 +862,47 @@
 .admin-actions button:hover,
 .admin-image-card__actions button:hover,
 .admin-faq-card__actions button:hover,
+.admin-faq-list > button:hover,
 .admin-block-card__actions button:hover,
 .admin-block-add button:hover,
 .admin-button-card__actions button:hover,
 .admin-button-list > button:hover,
-.admin-header__actions button:hover {
+.admin-header__actions button:hover,
+.admin-column-block__actions button:hover,
+.admin-section-card .admin-field-row > .admin-field > button:hover,
+.admin-section-card .admin-block-settings .admin-field > button:hover {
   background: var(--pearl);
   border-color: var(--text-muted);
+}
+
+.admin-column-block__actions button {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.admin-column-block__actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.admin-section-card .admin-block-settings .admin-field > button {
+  min-height: 2rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+}
+
+.admin-column-block__clear {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--admin-danger);
+  border-color: color-mix(in srgb, var(--admin-danger) 35%, var(--admin-border));
+  background: color-mix(in srgb, var(--admin-danger) 6%, var(--admin-surface));
+}
+
+.admin-column-block__clear:hover {
+  color: var(--admin-danger);
+  border-color: var(--admin-danger);
+  background: color-mix(in srgb, var(--admin-danger) 12%, var(--admin-surface));
 }
 
 .admin-actions button.primary,
@@ -657,8 +914,8 @@
 
 .admin-actions button.primary:hover,
 .admin-login button:hover {
-  background: var(--walnut);
-  border-color: var(--walnut);
+  background: var(--black);
+  border-color: var(--black);
   color: var(--white);
 }
 

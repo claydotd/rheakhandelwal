@@ -37,7 +37,7 @@ export const handler: Handler = async (event) => {
 
     try {
       const body = JSON.parse(event.body || '{}')
-      if (body?.version !== 1 || !body?.pages || !Array.isArray(body?.faq)) {
+      if (body?.version !== 1 || !body?.pages || !body?.footer) {
         return json(400, { error: 'Invalid content payload' })
       }
       await store.setJSON(CONTENT_KEY, body)

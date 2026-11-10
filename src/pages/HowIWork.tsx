@@ -1,6 +1,5 @@
-import ContentBlocks from '../components/ContentBlocks'
+import ContentSections from '../components/ContentSections'
 import ContentStatus from '../components/ContentStatus'
-import FaqSection from '../components/FaqSection'
 import { useSiteContent } from '../content/useSiteContent'
 
 export default function HowIWork() {
@@ -12,8 +11,7 @@ export default function HowIWork() {
 
   return (
     <article className="page">
-      <ContentBlocks blocks={page.blocks} />
-      <FaqSection items={content.faq} />
+      <ContentSections sections={page.sections} />
     </article>
   )
 }

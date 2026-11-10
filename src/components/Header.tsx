@@ -3,10 +3,9 @@ import { NavLink, useLocation } from 'react-router-dom'
 import './Header.css'
 
 const navItems: { to: string; label: string; end?: boolean }[] = [
-  { to: '/', label: 'Home', end: true },
   { to: '/about', label: 'About Me' },
-  { to: '/how-i-work', label: 'How I Work' },
-  { to: '/contact', label: 'Contact' },
+  { to: '/approach', label: 'Approach' },
+  { to: '/contact', label: 'Getting Started' },
 ]
 
 export default function Header() {
@@ -41,7 +40,7 @@ export default function Header() {
     <header className={`site-header${menuOpen ? ' is-menu-open' : ''}`}>
       <div className="site-header__inner">
         <NavLink to="/" className="site-header__brand" end>
-          Rhea Khandelwal Psychotherapy
+          Rhea Khandelwal | Psychotherapy&nbsp;&&nbsp;Counselling
         </NavLink>
         <button
           type="button"

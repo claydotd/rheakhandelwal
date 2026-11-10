@@ -1,4 +1,4 @@
-import ContentBlocks from '../components/ContentBlocks'
+import ContentSections from '../components/ContentSections'
 import ContentStatus from '../components/ContentStatus'
 import { useSiteContent } from '../content/useSiteContent'
 
@@ -11,11 +11,7 @@ export default function Home() {
 
   return (
     <article className="page home-page">
-      <div className="home-intro">
-        <h1>{page.title}</h1>
-      </div>
-
-      <ContentBlocks blocks={page.blocks} />
+      <ContentSections sections={page.sections} />
     </article>
   )
 }

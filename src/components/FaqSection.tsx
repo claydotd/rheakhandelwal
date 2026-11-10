@@ -4,12 +4,28 @@ import type { FaqItem } from '../content/types'
 
 type FaqSectionProps = {
   items: FaqItem[]
+  heading?: string
+  subheading?: string
+  headingId?: string
 }
 
-export default function FaqSection({ items }: FaqSectionProps) {
+export default function FaqSection({
+  items,
+  heading = '',
+  subheading = '',
+  headingId = 'faq-heading',
+}: FaqSectionProps) {
   const [openIds, setOpenIds] = useState<Set<string>>(() => new Set())
 
-  if (items.length === 0) return null
+  const visibleItems = items.filter(
+    (item) => item.question.trim() || item.answer.trim(),
+  )
+  if (visibleItems.length === 0) return null
+
+  const headingText = heading.trim()
+  const subheadingText = subheading.trim()
+  const hasHeading = headingText.length > 0
+  const hasSubheading = subheadingText.length > 0
 
   const toggle = (id: string) => {
     setOpenIds((prev) => {
@@ -21,10 +37,17 @@ export default function FaqSection({ items }: FaqSectionProps) {
   }
 
   return (
-    <section className="faq" aria-labelledby="faq-heading">
-      <h2 id="faq-heading">FAQ</h2>
+    <div className="faq" {...(hasHeading ? { 'aria-labelledby': headingId } : {})}>
+      {hasHeading || hasSubheading ? (
+        <div className="faq__header">
+          {hasHeading ? <h2 id={headingId}>{headingText}</h2> : null}
+          {hasSubheading ? (
+            <p className="faq__subheading">{subheadingText}</p>
+          ) : null}
+        </div>
+      ) : null}
       <div className="faq__list">
-        {items.map((item) => {
+        {visibleItems.map((item) => {
           const isOpen = openIds.has(item.id)
           const questionId = `faq-question-${item.id}`
           const answerId = `faq-answer-${item.id}`
@@ -62,6 +85,6 @@ export default function FaqSection({ items }: FaqSectionProps) {
           )
         })}
       </div>
-    </section>
+    </div>
   )
 }

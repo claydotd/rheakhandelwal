@@ -1,4 +1,4 @@
-import ContentBlocks from '../components/ContentBlocks'
+import ContentSections from '../components/ContentSections'
 import ContentStatus from '../components/ContentStatus'
 import { useSiteContent } from '../content/useSiteContent'
 
@@ -12,7 +12,7 @@ export default function Privacy() {
   return (
     <article className="page">
       <h1>{page.title}</h1>
-      <ContentBlocks blocks={page.blocks} />
+      <ContentSections sections={page.sections} />
     </article>
   )
 }

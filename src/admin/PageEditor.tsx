@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { PageContent, PageKey, SiteContent } from '../content/types'
 import { useSiteContent } from '../content/useSiteContent'
-import BlocksEditor from './BlocksEditor'
+import SectionsEditor from './SectionsEditor'
 import './admin.css'
 
 type EditablePageKey = Exclude<PageKey, 'home'>
@@ -61,9 +61,9 @@ export default function PageEditor({ pageKey }: PageEditorProps) {
         />
       </div>
 
-      <BlocksEditor
-        blocks={pageDraft.blocks}
-        onChange={(blocks) => setDraft({ ...pageDraft, blocks })}
+      <SectionsEditor
+        sections={pageDraft.sections}
+        onChange={(sections) => setDraft({ ...pageDraft, sections })}
         uploadImage={uploadImage}
         onError={(message) => {
           setStatus(message)

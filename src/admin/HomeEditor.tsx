@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { HomePageContent, SiteContent } from '../content/types'
 import { useSiteContent } from '../content/useSiteContent'
-import BlocksEditor from './BlocksEditor'
+import SectionsEditor from './SectionsEditor'
 import './admin.css'
 
 export default function HomeEditor() {
@@ -53,9 +53,9 @@ export default function HomeEditor() {
         />
       </div>
 
-      <BlocksEditor
-        blocks={homeDraft.blocks}
-        onChange={(blocks) => setDraft({ ...homeDraft, blocks })}
+      <SectionsEditor
+        sections={homeDraft.sections}
+        onChange={(sections) => setDraft({ ...homeDraft, sections })}
         uploadImage={uploadImage}
         onError={(message) => {
           setStatus(message)

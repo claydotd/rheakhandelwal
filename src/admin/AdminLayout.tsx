@@ -8,12 +8,11 @@ import './admin.css'
 
 const tabs = [
   { to: '/admin', label: 'Home', end: true },
-  { to: '/admin/how-i-work', label: 'How I Work' },
-  { to: '/admin/fees', label: 'Fees' },
+  { to: '/admin/approach', label: 'Approach' },
   { to: '/admin/about', label: 'About Me' },
   { to: '/admin/contact', label: 'Contact' },
-  { to: '/admin/faq', label: 'FAQ' },
   { to: '/admin/privacy', label: 'Privacy Policy' },
+  { to: '/admin/footer', label: 'Footer' },
 ]
 
 export default function AdminLayout() {

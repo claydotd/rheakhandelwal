@@ -1,5 +1,4 @@
-import ContactForm from '../components/ContactForm'
-import ContentBlocks from '../components/ContentBlocks'
+import ContentSections from '../components/ContentSections'
 import ContentStatus from '../components/ContentStatus'
 import { useSiteContent } from '../content/useSiteContent'
 
@@ -13,14 +12,7 @@ export default function Contact() {
   return (
     <article className="page contact-page">
       <h1>{page.title}</h1>
-      <div className="contact-page__layout">
-        <div className="contact-page__content">
-          <ContentBlocks blocks={page.blocks} />
-        </div>
-        <div className="contact-page__form">
-          <ContactForm />
-        </div>
-      </div>
+      <ContentSections sections={page.sections} />
     </article>
   )
 }

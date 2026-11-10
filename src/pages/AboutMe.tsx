@@ -1,4 +1,4 @@
-import ContentBlocks from '../components/ContentBlocks'
+import ContentSections from '../components/ContentSections'
 import ContentStatus from '../components/ContentStatus'
 import { useSiteContent } from '../content/useSiteContent'
 
@@ -11,7 +11,7 @@ export default function AboutMe() {
 
   return (
     <article className="page">
-      <ContentBlocks blocks={page.blocks} />
+      <ContentSections sections={page.sections} />
     </article>
   )
 }
