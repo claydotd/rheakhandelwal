@@ -22,7 +22,11 @@ export const handler: Handler = async (event) => {
 
   if (event.httpMethod === 'GET') {
     const stored = await store.get(CONTENT_KEY, { type: 'json' })
-    return json(200, stored ?? defaultSite)
+    // Short CDN/browser cache; admin saves should show within ~a minute.
+    return json(200, stored ?? defaultSite, {
+      'Cache-Control':
+        'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+    })
   }
 
   if (event.httpMethod === 'PUT') {
