@@ -1,4 +1,4 @@
-import { getStore } from '@netlify/blobs'
+import { connectLambda, getStore } from '@netlify/blobs'
 import type { Handler } from '@netlify/functions'
 import defaultSite from './lib/default-site.json'
 import { json, noContent } from './lib/http'
@@ -11,6 +11,9 @@ import {
 const CONTENT_KEY = 'site-content'
 
 export const handler: Handler = async (event) => {
+  // Classic Lambda-style handlers need this before getStore().
+  connectLambda(event)
+
   if (event.httpMethod === 'OPTIONS') {
     return noContent()
   }

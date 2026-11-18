@@ -1,4 +1,4 @@
-import { getStore } from '@netlify/blobs'
+import { connectLambda, getStore } from '@netlify/blobs'
 import type { Handler } from '@netlify/functions'
 import { randomUUID } from 'node:crypto'
 import { binary, json, noContent } from './lib/http'
@@ -13,6 +13,9 @@ type ImageMeta = {
 }
 
 export const handler: Handler = async (event) => {
+  // Classic Lambda-style handlers need this before getStore().
+  connectLambda(event)
+
   if (event.httpMethod === 'OPTIONS') {
     return noContent()
   }
